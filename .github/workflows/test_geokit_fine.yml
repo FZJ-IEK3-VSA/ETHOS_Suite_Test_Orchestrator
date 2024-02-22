@@ -1,0 +1,59 @@
+name: Run combined tests for fine
+on: 
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Manual run' 
+  push:
+    branches: 
+      - main
+      - dev
+  pull_request:
+    branches: 
+      - main
+  # Allows to trigger the workflow manually
+    
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # Some Examples for cron syntax https://crontab.guru/examples.html
+    # Schedules job at any point after 12 pm
+    - cron:  '0 0 * * *'
+    # Weekly after sunday
+    # - cron: 0 0 * * 0
+  
+jobs:
+    TestGeokitCondaForge:
+        name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: ["ubuntu-latest"]
+                fine-version: ["2.3.4","2.3.3","2.3.2","2.3.1","2.3.0","2.2.3","2.2.2"]
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            repository: FZJ-IEK3-VSA/FINE
+            path: './fine'  
+            ref: ${{ matrix.fine-version }}
+        - uses: conda-incubator/setup-miniconda@v3
+          with:
+            miniforge-version: latest
+            channels: conda-forge
+            activate-environment: test_env
+        - name: Run tests
+          shell: pwsh
+          run: |
+            ls
+            echo "LS Done"
+            echo ${{ matrix.fine-version }}
+            echo "Fine version is printed"
+            mamba install -n test_env fine=${{ matrix.fine-version }} pytest
+            echo "Installation done"
+            conda list
+            echo "libaries printed"
+            cd test
+            echo "start pytest"
+            conda run -n test_env pytest
+            echo "Pytest done"
