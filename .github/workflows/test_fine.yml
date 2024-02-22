@@ -37,7 +37,7 @@ jobs:
             repository: FZJ-IEK3-VSA/FINE
             path: './fine'  
             # ref: ${{ matrix.fine-version }}
-            ref: 2.3.4
+            ref: v2.3.4
             fetch-depth: 0
         - uses: conda-incubator/setup-miniconda@v3
           with:
