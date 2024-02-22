@@ -4,6 +4,9 @@ on:
     inputs:
       tags:
         description: 'Manual run' 
+  push:
+    branches: 
+      - dev
 
   
 jobs:
