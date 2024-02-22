@@ -29,14 +29,14 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest"]
-                fine-version: ["v2.3.4","v2.3.3","v2.3.2","v2.3.1","v2.3.0","v2.2.3","v2.2.2"]
+                fine-version: ["2.3.4","2.3.3","2.3.2","2.3.1","2.3.0","2.2.3","2.2.2"]
         steps:
         - name: Checkout
           uses: actions/checkout@v4
           with:
             repository: FZJ-IEK3-VSA/FINE
             path: './fine'  
-            ref: ${{ matrix.fine-version }}
+            ref: v${{ matrix.fine-version }}
             fetch-depth: 0
         - uses: conda-incubator/setup-miniconda@v3
           with:
