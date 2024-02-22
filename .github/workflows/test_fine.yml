@@ -56,7 +56,6 @@ jobs:
             echo "libaries printed"
             ls
             cd fine
-            cd test
             echo "start pytest"
-            conda run -n test_env pytest
+            conda run -n test_env python -m pytest test/
             echo "Pytest done"
