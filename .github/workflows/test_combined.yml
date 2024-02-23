@@ -49,22 +49,22 @@ jobs:
               shell: pwsh
               id: fine-version
               run: |
-                  $FINE_STRING = conda run -n test_env conda list -e fine | Out-String
+                  $FINE_STRING = conda list -e -n test_env fine | Out-String
                   FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "FINE_VERSION=$FINE_VERSION" >> $GITHUB_OUTPUT
             - name: Get fine version
               shell: pwsh
               id: other-version
               run: |
-                  $GEOKIT_STRING = conda run -n test_env conda list -e geokit | Out-String
+                  $GEOKIT_STRING = conda list -e -n test_env geokit | Out-String
                   $GEOKIT_VERSION = [regex]::Match($GEOKIT_STRING, 'geokit=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "GEOKIT_VERSION=$GEOKIT_VERSION" >> $GITHUB_OUTPUT
 
-                  $GLAES_STRING = conda run -n test_env conda list -e geokit | Out-String
+                  $GLAES_STRING = conda list -e -n test_env geokit | Out-String
                   $GLAES_VERSION = [regex]::Match($GLAES_STRING, 'glaes=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "GLAES_VERSION=$GLAES_VERSION" >> $GITHUB_OUTPUT
 
-                  $RESKIT_STRING = conda run -n test_env conda list -e reskit | Out-String
+                  $RESKIT_STRING = conda list -e -n test_env reskit | Out-String
                   $RESKIT_VERSION = [regex]::Match($RESKIT_STRING, 'glaes=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "RESKIT_VERSION=$RESKIT_VERSION" >> $GITHUB_OUTPUT
             - name: Checkout Fine
