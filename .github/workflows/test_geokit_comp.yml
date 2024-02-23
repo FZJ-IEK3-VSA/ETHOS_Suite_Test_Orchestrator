@@ -41,17 +41,10 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba install -v -n  test_env fine geokit pytest=6.2.4 scikit-learn=1.1.3
+                    mamba install -v -n  test_env geokit pytest=6.2.4 scikit-learn=1.1.3
                     echo "Installation done"
                     conda list -n test_env
                     echo "libaries printed"                          
-            - name: Get fine version
-              shell: pwsh
-              id: fine-version
-              run: |
-                  $FINE_STRING = conda run -n test_env conda list -e fine | Out-String
-                  FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
-                  echo "FINE_VERSION=$FINE_VERSION" >> $GITHUB_OUTPUT
             - name: Get fine version
               shell: pwsh
               id: other-version
@@ -60,13 +53,6 @@ jobs:
                   $GEOKIT_VERSION = [regex]::Match($GEOKIT_STRING, 'geokit=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "GEOKIT_VERSION=$GEOKIT_VERSION" >> $GITHUB_OUTPUT
 
-            - name: Checkout Fine
-              uses: actions/checkout@v4
-              with:
-                repository: FZJ-IEK3-VSA/FINE
-                path: './fine' 
-                ref: v${{ steps.fine-version.outputs.FINE_VERSION }}
-                fetch-depth: 0 
             - name: Checkout geokit
               uses: actions/checkout@v4
               with:
@@ -75,17 +61,6 @@ jobs:
                 ref: ${{ steps.other-version.outputs.GEOKIT_VERSION }}
                 fetch-depth: 0 
   
-            
-            - name: Run pytest for fine
-              shell: pwsh
-              run: |
-                    echo "Start ls"
-                    ls
-                    echo "ls terminated"
-                    cd fine
-                    echo "start pytest"
-                    conda run -n test_env python -m pytest test/
-                    echo "Pytest done"
             - name: Run pytest for geokit
               shell: pwsh
               run: |
