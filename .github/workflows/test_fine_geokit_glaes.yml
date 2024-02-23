@@ -52,8 +52,10 @@ jobs:
                 $FINE_STRING = conda list -e -n test_env fine | Out-String
                 echo the fine string is $FINE_STRING
                 $FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
-                echo "FINE_VERSION=$FINE_VERSION" >> $GITHUB_OUTPUT
-                echo fine version: $FINE_VERSION
+                echo "FINE_VERSION_NUMBER=$FINE_VERSION" >> $GITHUB_OUTPUT
+                echo $FINE_VERSION_NUMBER
+                echo "FINE_VERSION_NUMBER_WITH_V=v$FINE_VERSION" >> $GITHUB_OUTPUT
+                echo $FINE_VERSION_NUMBER_WITH_V
             - name: Get fine version
               shell: pwsh
               id: other-version
@@ -76,7 +78,7 @@ jobs:
               with:
                 repository: FZJ-IEK3-VSA/FINE
                 path: './fine' 
-                ref: "v${{ steps.fine-version.outputs.FINE_VERSION }}"
+                ref: ${{ steps.fine-version.outputs.FINE_VERSION_NUMBER_WITH_V }}
                 fetch-depth: 0 
             - name: Checkout geokit
               uses: actions/checkout@v4
