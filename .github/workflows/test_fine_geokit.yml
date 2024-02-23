@@ -1,4 +1,4 @@
-name: Run combined tests for fine, geokit, glaes and reskit
+name: Test fine and geokit installation
 on: 
   workflow_dispatch:
     inputs:
@@ -68,7 +68,7 @@ jobs:
               with:
                 repository: FZJ-IEK3-VSA/FINE
                 path: './fine' 
-                ref: v${{ steps.fine-version.outputs.FINE_VERSION }}
+                ref: "v${{ steps.fine-version.outputs.FINE_VERSION }}"
                 fetch-depth: 0 
             - name: Checkout geokit
               uses: actions/checkout@v4
@@ -76,8 +76,7 @@ jobs:
                 repository: FZJ-IEK3-VSA/geokit
                 path: './geokit'
                 ref: ${{ steps.other-version.outputs.GEOKIT_VERSION }}
-                fetch-depth: 0 
-  
+                fetch-depth: 0   
             
             - name: Run pytest for fine
               shell: pwsh

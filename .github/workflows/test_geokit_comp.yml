@@ -1,4 +1,4 @@
-name: Run combined tests for fine, geokit, glaes and reskit
+name: Test Geokit installation with fine constraints
 on: 
   workflow_dispatch:
     inputs:
@@ -41,7 +41,7 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba install -v -n  test_env geokit pytest=6.2.4 scikit-learn=1.1.3
+                    mamba install -v -n  test_env geokit=1.30 pytest=6.2.4 scikit-learn=1.1.3
                     echo "Installation done"
                     conda list -n test_env
                     echo "libaries printed"                          

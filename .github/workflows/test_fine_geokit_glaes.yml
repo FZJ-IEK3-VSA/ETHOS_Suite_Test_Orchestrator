@@ -1,4 +1,4 @@
-name: Run combined tests for fine, geokit, glaes and reskit
+name: Run combined tests for fine, geokit and glaes 
 on: 
   workflow_dispatch:
     inputs:
@@ -70,11 +70,7 @@ jobs:
                   echo "GLAES_VERSION=$GLAES_VERSION" >> $GITHUB_OUTPUT
                   echo Glaes Version: $GLAES_VERSION 
                   
-                  $RESKIT_STRING = conda list -e -n test_env reskit | Out-String
-                  echo The reskit string is $RESKIT_STRING
-                  $RESKIT_VERSION = [regex]::Match($RESKIT_STRING, 'glaes=(\d+\.\d+\.\d+)=').Groups[1].Value 
-                  echo "RESKIT_VERSION=$RESKIT_VERSION" >> $GITHUB_OUTPUT
-                  The reskit version is $RESKIT_VERSION
+
             - name: Checkout Fine
               uses: actions/checkout@v4
               with:
@@ -132,16 +128,6 @@ jobs:
                     ls
                     echo "ls terminated"
                     cd glaes
-                    echo "start pytest"
-                    conda run -n test_env python -m pytest
-                    echo "Pytest done"
-            - name: Run pytest for reskit
-              shell: pwsh
-              run: |
-                    echo "Start ls"
-                    ls
-                    echo "ls terminated"
-                    cd reskit
                     echo "start pytest"
                     conda run -n test_env python -m pytest
                     echo "Pytest done"
