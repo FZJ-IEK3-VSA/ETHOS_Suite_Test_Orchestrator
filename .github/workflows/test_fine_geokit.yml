@@ -50,7 +50,8 @@ jobs:
               id: fine-version
               run: |
                   $FINE_STRING = conda list -e -n test_env fine | Out-String
-                  FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
+                  echo the fine string is $FINE_STRING
+                  $FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "FINE_VERSION=$FINE_VERSION" >> $GITHUB_OUTPUT
                   echo $FINE_VERSION
             - name: Get other version
@@ -58,6 +59,7 @@ jobs:
               id: other-version
               run: |
                   $GEOKIT_STRING = conda list -e -n test_env geokit | Out-String
+                  echo The geokit string is $GEOKIT_STRING
                   $GEOKIT_VERSION = [regex]::Match($GEOKIT_STRING, 'geokit=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "GEOKIT_VERSION=$GEOKIT_VERSION" >> $GITHUB_OUTPUT
                   echo $GEOKIT_VERSION

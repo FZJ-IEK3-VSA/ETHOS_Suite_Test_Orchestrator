@@ -41,7 +41,7 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba install -v -n  test_env fine geokit glaes reskit pytest=6.2.4 scikit-learn=1.1.3
+                    mamba install -v -n test_env fine geokit glaes reskit pytest=6.2.4 scikit-learn=1.1.3
                     echo "Installation done"
                     conda list -n test_env
                     echo "libaries printed"                          
@@ -50,6 +50,7 @@ jobs:
               id: fine-version
               run: |
                   $FINE_STRING = conda list -e -n test_env fine | Out-String
+                  echo The fine string is $FINE_STRING
                   FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "FINE_VERSION=$FINE_VERSION" >> $GITHUB_OUTPUT
             - name: Get fine version
@@ -57,6 +58,7 @@ jobs:
               id: other-version
               run: |
                   $GEOKIT_STRING = conda list -e -n test_env geokit | Out-String
+                  echo The Geokit string is $GEOKIT_STRING
                   $GEOKIT_VERSION = [regex]::Match($GEOKIT_STRING, 'geokit=(\d+\.\d+\.\d+)=').Groups[1].Value 
                   echo "GEOKIT_VERSION=$GEOKIT_VERSION" >> $GITHUB_OUTPUT
 
