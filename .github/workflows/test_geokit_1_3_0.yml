@@ -20,10 +20,10 @@ jobs:
             fail-fast: false
             matrix:
                 # os: ["ubuntu-latest","ubuntu-20.04", "macos-latest","macos-13","macos-12", "macos-11","windows-latest","windows-2019"]
-                os: ["ubuntu-latest"]
+                os: ["ubuntu-latest","windows-latest"]
                 geokit_version: ["1.3.0"]
                 numpy_version: ["1.23.5"]
-                scikit_version: ["1.6.1","1.5","1.4","1.3","1.2"]
+                scikit_version: ["1.3","1.2"]
         steps:
             - uses: conda-incubator/setup-miniconda@v3
               with:
@@ -36,7 +36,7 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba install -c conda-forge -n test_env geokit=${{ matrix.geokit_version }} pytest numpy=${{ matrix.numpy_version }} scikit-learn=${{ matrix.scikit_version }}
+                    mamba install -c conda-forge -n test_env geokit=${{ matrix.geokit_version }} pytest numpy=${{ matrix.numpy_version }} scikit-learn=${{ matrix.scikit_version }} gdal=3.2.1
                     echo "Installation done"
                     conda list -n test_env
                     echo "libraries printed"                          
