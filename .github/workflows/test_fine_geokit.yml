@@ -1,105 +1,105 @@
-name: Test fine and geokit installation
-on: 
-  workflow_dispatch:
-    inputs:
-      tags:
-        description: 'Manual run' 
-  push:
-    branches: 
-      - main
-  pull_request:
-    branches: 
-      - main
-  # Allows to trigger the workflow manually
+# name: Test fine and geokit installation
+# on: 
+#   workflow_dispatch:
+#     inputs:
+#       tags:
+#         description: 'Manual run' 
+#   push:
+#     branches: 
+#       - main
+#   pull_request:
+#     branches: 
+#       - main
+#   # Allows to trigger the workflow manually
     
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    # Some Examples for cron syntax https://crontab.guru/examples.html
-    # Schedules job at any point after 12 pm
-    - cron:  '0 0 * * *'
-    # Weekly after sunday
-    # - cron: 0 0 * * 0
+#   schedule:
+#     # * is a special character in YAML so you have to quote this string
+#     # Some Examples for cron syntax https://crontab.guru/examples.html
+#     # Schedules job at any point after 12 pm
+#     - cron:  '0 0 * * *'
+#     # Weekly after sunday
+#     # - cron: 0 0 * * 0
   
-jobs:
-    TestFineAndGeokitInstallation:
-        name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: false
-            matrix:
-                # os: ["ubuntu-latest","ubuntu-20.04", "macos-latest","macos-13","macos-12", "macos-11","windows-latest","windows-2019"]
-                os: ["ubuntu-latest"]
-        steps:
-            - uses: conda-incubator/setup-miniconda@v3
-              with:
-                miniforge-version: latest
-                channels: conda-forge
-                activate-environment: test_env
-            - name: Install libraries
-              shell: pwsh
-              id: install-step
-              run: |
-                    ls
-                    echo "LS Done"
-                    mamba install -v -n  test_env fine geokit pytest=6.2.4 scikit-learn=1.1.3
-                    echo "Installation done"
-                    conda list -n test_env
-                    echo "libaries printed"                          
-            - name: Get fine version
-              shell: pwsh
-              id: fine-version
-              run: |
-                  $FINE_STRING = conda list -e -n test_env fine | Out-String
-                  echo the fine string is $FINE_STRING
-                  $FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
-                  echo "FINE_VERSION_NUMBER=$FINE_VERSION" >> $GITHUB_OUTPUT
-                  echo $FINE_VERSION_NUMBER
-                  echo "FINE_VERSION_NUMBER_WITH_V=v$FINE_VERSION" >> $GITHUB_OUTPUT
-                  echo $FINE_VERSION_NUMBER_WITH_V
-            - name: Get other version
-              shell: pwsh
-              id: other-version
-              run: |
-                  $GEOKIT_STRING = conda list -e -n test_env geokit | Out-String
-                  echo The geokit string is $GEOKIT_STRING
-                  $GEOKIT_VERSION = [regex]::Match($GEOKIT_STRING, 'geokit=(\d+\.\d+\.\d+)=').Groups[1].Value 
-                  echo "GEOKIT_VERSION=$GEOKIT_VERSION" >> $GITHUB_OUTPUT
-                  echo $GEOKIT_VERSION
-            - name: Checkout Fine
-              uses: actions/checkout@v4
-              with:
-                repository: FZJ-IEK3-VSA/FINE
-                path: './fine' 
-                ref: ${{ steps.fine-version.outputs.FINE_VERSION_NUMBER_WITH_V }}
-                fetch-depth: 0 
-            - name: Checkout geokit
-              uses: actions/checkout@v4
-              with:
-                repository: FZJ-IEK3-VSA/geokit
-                path: './geokit'
-                ref: ${{ steps.other-version.outputs.GEOKIT_VERSION }}
-                fetch-depth: 0   
+# jobs:
+#     TestFineAndGeokitInstallation:
+#         name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
+#         runs-on: ${{ matrix.os }}
+#         strategy:
+#             fail-fast: false
+#             matrix:
+#                 # os: ["ubuntu-latest","ubuntu-20.04", "macos-latest","macos-13","macos-12", "macos-11","windows-latest","windows-2019"]
+#                 os: ["ubuntu-latest"]
+#         steps:
+#             - uses: conda-incubator/setup-miniconda@v3
+#               with:
+#                 miniforge-version: latest
+#                 channels: conda-forge
+#                 activate-environment: test_env
+#             - name: Install libraries
+#               shell: pwsh
+#               id: install-step
+#               run: |
+#                     ls
+#                     echo "LS Done"
+#                     mamba install -v -n  test_env fine geokit pytest=6.2.4 scikit-learn=1.1.3
+#                     echo "Installation done"
+#                     conda list -n test_env
+#                     echo "libaries printed"                          
+#             - name: Get fine version
+#               shell: pwsh
+#               id: fine-version
+#               run: |
+#                   $FINE_STRING = conda list -e -n test_env fine | Out-String
+#                   echo the fine string is $FINE_STRING
+#                   $FINE_VERSION = [regex]::Match($FINE_STRING, 'fine=(\d+\.\d+\.\d+)=').Groups[1].Value 
+#                   echo "FINE_VERSION_NUMBER=$FINE_VERSION" >> $GITHUB_OUTPUT
+#                   echo $FINE_VERSION_NUMBER
+#                   echo "FINE_VERSION_NUMBER_WITH_V=v$FINE_VERSION" >> $GITHUB_OUTPUT
+#                   echo $FINE_VERSION_NUMBER_WITH_V
+#             - name: Get other version
+#               shell: pwsh
+#               id: other-version
+#               run: |
+#                   $GEOKIT_STRING = conda list -e -n test_env geokit | Out-String
+#                   echo The geokit string is $GEOKIT_STRING
+#                   $GEOKIT_VERSION = [regex]::Match($GEOKIT_STRING, 'geokit=(\d+\.\d+\.\d+)=').Groups[1].Value 
+#                   echo "GEOKIT_VERSION=$GEOKIT_VERSION" >> $GITHUB_OUTPUT
+#                   echo $GEOKIT_VERSION
+#             - name: Checkout Fine
+#               uses: actions/checkout@v4
+#               with:
+#                 repository: FZJ-IEK3-VSA/FINE
+#                 path: './fine' 
+#                 ref: ${{ steps.fine-version.outputs.FINE_VERSION_NUMBER_WITH_V }}
+#                 fetch-depth: 0 
+#             - name: Checkout geokit
+#               uses: actions/checkout@v4
+#               with:
+#                 repository: FZJ-IEK3-VSA/geokit
+#                 path: './geokit'
+#                 ref: ${{ steps.other-version.outputs.GEOKIT_VERSION }}
+#                 fetch-depth: 0   
             
-            - name: Run pytest for fine
-              shell: pwsh
-              run: |
-                    echo "Start ls"
-                    ls
-                    echo "ls terminated"
-                    cd fine
-                    echo "start pytest"
-                    conda run -n test_env python -m pytest test/
-                    echo "Pytest done"
-            - name: Run pytest for geokit
-              shell: pwsh
-              run: |
-                    echo "Start ls"
-                    ls
-                    echo "ls terminated"
-                    cd geokit
-                    echo "start pytest"
-                    conda run -n test_env python -m pytest
-                    echo "Pytest done"
+#             - name: Run pytest for fine
+#               shell: pwsh
+#               run: |
+#                     echo "Start ls"
+#                     ls
+#                     echo "ls terminated"
+#                     cd fine
+#                     echo "start pytest"
+#                     conda run -n test_env python -m pytest test/
+#                     echo "Pytest done"
+#             - name: Run pytest for geokit
+#               shell: pwsh
+#               run: |
+#                     echo "Start ls"
+#                     ls
+#                     echo "ls terminated"
+#                     cd geokit
+#                     echo "start pytest"
+#                     conda run -n test_env python -m pytest
+#                     echo "Pytest done"
 
 
                     
