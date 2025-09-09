@@ -18,7 +18,7 @@ jobs:
         name: Test on ${{ matrix.os }})
         runs-on: ${{ matrix.os }}
         strategy:
-            fail-fast: false
+            fail-fast: true
             matrix:
                 # os: ["ubuntu-latest","ubuntu-20.04", "macos-latest","macos-13","macos-12", "macos-11","windows-latest","windows-2019"]
                 os: ["self-hosted"]
@@ -34,7 +34,7 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba install -v -n test_env fine geokit glaes reskit
+                    mamba install -v -c conda-forge -c nodefaults -n test_env fine geokit glaes reskit
                     echo "Installation done"
                     conda list -n test_env
                     echo "libaries printed"                          
