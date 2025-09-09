@@ -32,7 +32,7 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba create -v -n test_env -c conda-forge -c nodefaults fine geokit glaes reskit
+                    mamba create -v -n test_env -c conda-forge -c nodefaults geokit glaes reskit
                     echo "Installation done"
                     mamba list -n test_env
                     echo "libaries printed"
@@ -117,7 +117,7 @@ jobs:
               with:
                 repository: FZJ-IEK3-VSA/glaes
                 path: './glaes'
-                ref: ${{ steps.glaes-version.outputs.RESKIT_VERSION_NUMBER_WITH_V }}
+                ref: ${{ steps.glaes-version.outputs.GLAES_VERSION_NUMBER_WITH_V }}
                 fetch-depth: 0 
             - name: Run pytest for geokit
               shell: pwsh
@@ -126,10 +126,28 @@ jobs:
                     ls
                     echo "ls terminated"
                     cd geokit
+                    echo "print ls"
+                    ls
+                    echo "printed files"
                     echo "start pytest"
                     mamba run -n test_env python -m pytest
                     echo "Pytest done"
+                    cd ..
 
+            - name: Run pytest for reskit
+              shell: pwsh
+              run: |
+                    echo "Start ls"
+                    ls
+                    echo "ls terminated"
+                    cd reskit
+                    echo "print ls"
+                    ls
+                    echo "printed files"
+                    echo "start pytest"
+                    mamba run -n test_env python -m pytest
+                    echo "Pytest done"
+                    cd ..
             - name: Run pytest for glaes
               shell: pwsh
               run: |
@@ -137,8 +155,12 @@ jobs:
                     ls
                     echo "ls terminated"
                     cd glaes
+                    echo "print ls"
+                    ls
+                    echo "printed files"
                     echo "start pytest"
                     mamba run -n test_env python -m pytest
                     echo "Pytest done"
+                    cd ..
 
                     
