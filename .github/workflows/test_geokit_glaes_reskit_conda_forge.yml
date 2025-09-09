@@ -32,7 +32,7 @@ jobs:
               run: |
                     ls
                     echo "LS Done"
-                    mamba install -v -n -c conda-forge -c nodefaults test_env fine geokit glaes reskit
+                    mamba create -v -n test_env -c conda-forge -c nodefaults fine geokit glaes reskit
                     echo "Installation done"
                     conda list -n test_env
                     echo "libaries printed"                          
